@@ -1,38 +1,29 @@
 import React, { useEffect } from 'react';
-import { Box, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const Splash: React.FC = () => {
     const navigate = useNavigate();
+    const { currentUser, loading } = useAuth();
 
     useEffect(() => {
+        if (loading) return;
         const timer = setTimeout(() => {
-            // Logic to check if user has seen onboarding could go here
-            // For now, go to onboarding directly
-            navigate('/onboarding');
-        }, 2500);
+            navigate(currentUser ? '/home' : '/onboarding');
+        }, 2000);
         return () => clearTimeout(timer);
-    }, [navigate]);
+    }, [navigate, currentUser, loading]);
 
     return (
-        <Box
-            sx={{
-                height: '100vh',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                background: 'linear-gradient(135deg, #6200EA 0%, #03DAC6 100%)',
-                color: 'white'
-            }}
-        >
-            <Typography variant="h2" fontWeight="bold" gutterBottom>
-                FlowPay
-            </Typography>
-            <Typography variant="h6">
-                Programmable Money Flows
-            </Typography>
-        </Box>
+        <div className="flex h-screen w-full flex-col items-center justify-center bg-primary text-white">
+            <div className="flex flex-col items-center gap-4 animate-pulse">
+                <div className="w-20 h-20 rounded-2xl bg-white/15 flex items-center justify-center shadow-2xl">
+                    <span className="material-symbols-outlined text-white text-5xl">account_tree</span>
+                </div>
+                <h1 className="text-4xl font-extrabold tracking-tight">FlowPay</h1>
+                <p className="text-white/70 text-base font-medium">Programmable Money Flows</p>
+            </div>
+        </div>
     );
 };
 

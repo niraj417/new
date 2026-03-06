@@ -1,82 +1,55 @@
 import React, { useState } from 'react';
-import { Box, Typography, Button, Stepper, Step, StepLabel, TextField, MenuItem, Select, FormControl, InputLabel, Chip, OutlinedInput, FormControlLabel, Switch } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../firebase';
 
-const steps = ['Basics', 'Budget', 'Participants', 'Categories', 'Limits', 'Rules', 'Automation', 'Fund & Activate'];
-
-const CATEGORIES = ['Food', 'Transport', 'Healthcare', 'Groceries', 'Materials', 'Fuel', 'Entertainment'];
+const steps = ['Basics', 'Budget', 'Participants', 'Categories', 'Limits', 'Rules', 'Fund & Activate'];
+const CATEGORIES = ['Food', 'Transport', 'Healthcare', 'Groceries', 'Materials', 'Fuel', 'Entertainment', 'Medical'];
 
 const CreateFlowWizard: React.FC = () => {
     const navigate = useNavigate();
     const { currentUser, userProfile } = useAuth();
-
     const [activeStep, setActiveStep] = useState(0);
+    const [submitting, setSubmitting] = useState(false);
     const [flowData, setFlowData] = useState({
-        name: '',
-        description: '',
-        budgetType: 'Monthly',
-        budgetAmount: '',
+        name: '', description: '', budgetType: 'Monthly', budgetAmount: '',
         participants: [] as { email: string, role: string }[],
         allowedCategories: [] as string[],
-        perTransactionLimit: '',
-        dailyLimit: '',
-        monthlyLimit: '',
-        merchantRestrictions: '',
-        locationRestrictions: '',
-        approvalRequired: false,
-        receiptRequired: false,
-        autoRefill: false,
-        initialFunding: ''
+        perTransactionLimit: '', dailyLimit: '', monthlyLimit: '',
+        merchantRestrictions: '', approvalRequired: false, receiptRequired: false,
+        autoRefill: false, initialFunding: ''
     });
-
     const [partEmail, setPartEmail] = useState('');
     const [partRole, setPartRole] = useState('Spender');
 
-    const handleNext = () => {
-        if (activeStep === steps.length - 1) {
-            handleComplete();
-        } else {
-            setActiveStep((prev) => prev + 1);
-        }
-    };
-
-    const handleBack = () => {
-        setActiveStep((prev) => prev - 1);
-    };
-
-    const handleChange = (prop: string) => (event: any) => {
-        setFlowData({ ...flowData, [prop]: event.target.value });
-    };
+    const update = (k: string, v: unknown) => setFlowData(prev => ({ ...prev, [k]: v }));
 
     const handleAddParticipant = () => {
-        if (partEmail) {
-            setFlowData(prev => ({
-                ...prev,
-                participants: [...prev.participants, { email: partEmail, role: partRole }]
-            }));
-            setPartEmail('');
-        }
+        if (partEmail) { update('participants', [...flowData.participants, { email: partEmail, role: partRole }]); setPartEmail(''); }
+    };
+
+    const toggleCategory = (cat: string) => {
+        update('allowedCategories', flowData.allowedCategories.includes(cat)
+            ? flowData.allowedCategories.filter(c => c !== cat)
+            : [...flowData.allowedCategories, cat]);
     };
 
     const handleComplete = async () => {
+        setSubmitting(true);
         try {
-            const flowPayload = {
-                name: flowData.name,
-                description: flowData.description,
-                ownerId: currentUser?.uid,
+            await addDoc(collection(db, 'flows'), {
+                name: flowData.name, description: flowData.description,
+                adminId: currentUser?.uid,
                 createdAt: serverTimestamp(),
-                budgetType: flowData.budgetType,
-                budgetAmount: Number(flowData.budgetAmount),
-                flowBalance: Number(flowData.initialFunding),
-                status: 'active',
+                budgetType: flowData.budgetType, budgetAmount: Number(flowData.budgetAmount),
+                balance: Number(flowData.initialFunding), budget: Number(flowData.budgetAmount),
+                icon: 'account_tree', status: 'active',
+                participantIds: [currentUser?.uid],
                 participants: [{ userId: currentUser?.uid, email: currentUser?.email, role: 'Owner' }, ...flowData.participants],
                 rules: {
                     allowedCategories: flowData.allowedCategories,
                     allowedMerchants: flowData.merchantRestrictions.split(',').map(s => s.trim()).filter(Boolean),
-                    geoRestriction: flowData.locationRestrictions,
                     receiptRequired: flowData.receiptRequired,
                     approvalRequired: flowData.approvalRequired
                 },
@@ -85,153 +58,167 @@ const CreateFlowWizard: React.FC = () => {
                     dailyLimit: Number(flowData.dailyLimit) || null,
                     monthlyLimit: Number(flowData.monthlyLimit) || null
                 },
-                automations: {
-                    autoRefill: flowData.autoRefill
-                }
-            };
-
-            await addDoc(collection(db, 'flows'), flowPayload);
-            alert('Flow Created Successfully!');
+                automations: { autoRefill: flowData.autoRefill }
+            });
             navigate('/flows');
-        } catch (error) {
-            console.error('Error creating flow', error);
-            alert('Failed to create flow');
-        }
+        } catch (e) { console.error(e); }
+        setSubmitting(false);
     };
 
-    const renderStepContent = (step: number) => {
-        switch (step) {
-            case 0:
-                return (
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, mt: 3 }}>
-                        <TextField label="Flow Name" fullWidth value={flowData.name} onChange={handleChange('name')} placeholder="e.g. Construction Site A" />
-                        <TextField label="Description" fullWidth multiline rows={3} value={flowData.description} onChange={handleChange('description')} />
-                    </Box>
-                );
-            case 1:
-                return (
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, mt: 3 }}>
-                        <FormControl fullWidth>
-                            <InputLabel>Budget Type</InputLabel>
-                            <Select value={flowData.budgetType} label="Budget Type" onChange={handleChange('budgetType')}>
-                                <MenuItem value="Daily">Daily</MenuItem>
-                                <MenuItem value="Weekly">Weekly</MenuItem>
-                                <MenuItem value="Monthly">Monthly</MenuItem>
-                                <MenuItem value="Custom">Custom</MenuItem>
-                            </Select>
-                        </FormControl>
-                        <TextField label="Budget Amount ($)" type="number" fullWidth value={flowData.budgetAmount} onChange={handleChange('budgetAmount')} />
-                    </Box>
-                );
-            case 2:
-                return (
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, mt: 3 }}>
-                        <Box sx={{ display: 'flex', gap: 1 }}>
-                            <TextField label="Participant Email" fullWidth size="small" value={partEmail} onChange={e => setPartEmail(e.target.value)} />
-                            <FormControl size="small" sx={{ minWidth: 120 }}>
-                                <InputLabel>Role</InputLabel>
-                                <Select value={partRole} label="Role" onChange={e => setPartRole(e.target.value)}>
-                                    <MenuItem value="Manager">Manager</MenuItem>
-                                    <MenuItem value="Spender">Spender</MenuItem>
-                                    <MenuItem value="Viewer">Viewer</MenuItem>
-                                </Select>
-                            </FormControl>
-                            <Button variant="contained" onClick={handleAddParticipant}>Add</Button>
-                        </Box>
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 2 }}>
-                            {flowData.participants.map((p, i) => (
-                                <Chip key={i} label={`${p.email} (${p.role})`} onDelete={() => {
-                                    setFlowData(prev => ({ ...prev, participants: prev.participants.filter((_, idx) => idx !== i) }))
-                                }} />
-                            ))}
-                        </Box>
-                    </Box>
-                );
-            case 3:
-                return (
-                    <Box sx={{ mt: 3 }}>
-                        <FormControl fullWidth>
-                            <InputLabel>Allowed Categories</InputLabel>
-                            <Select
-                                multiple
-                                value={flowData.allowedCategories}
-                                onChange={handleChange('allowedCategories')}
-                                input={<OutlinedInput label="Allowed Categories" />}
-                                renderValue={(selected) => (
-                                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                        {(selected as string[]).map((value) => (
-                                            <Chip key={value} label={value} />
-                                        ))}
-                                    </Box>
-                                )}
-                            >
-                                {CATEGORIES.map((cat) => (
-                                    <MenuItem key={cat} value={cat}>{cat}</MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </Box>
-                );
-            case 4:
-                return (
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, mt: 3 }}>
-                        <TextField label="Per Transaction Limit ($)" type="number" fullWidth value={flowData.perTransactionLimit} onChange={handleChange('perTransactionLimit')} />
-                        <TextField label="Daily Limit ($)" type="number" fullWidth value={flowData.dailyLimit} onChange={handleChange('dailyLimit')} />
-                        <TextField label="Monthly Limit ($)" type="number" fullWidth value={flowData.monthlyLimit} onChange={handleChange('monthlyLimit')} />
-                    </Box>
-                );
-            case 5:
-                return (
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, mt: 3 }}>
-                        <TextField label="Allowed Merchants (comma separated)" fullWidth value={flowData.merchantRestrictions} onChange={handleChange('merchantRestrictions')} />
-                        <TextField label="Location Restrictions (e.g. Zip code)" fullWidth value={flowData.locationRestrictions} onChange={handleChange('locationRestrictions')} />
-                        <FormControlLabel control={<Switch checked={flowData.approvalRequired} onChange={(e) => setFlowData({ ...flowData, approvalRequired: e.target.checked })} />} label="Transactions require strict approval" />
-                        <FormControlLabel control={<Switch checked={flowData.receiptRequired} onChange={(e) => setFlowData({ ...flowData, receiptRequired: e.target.checked })} />} label="Require receipt upload post-transaction" />
-                    </Box>
-                );
-            case 6:
-                return (
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, mt: 3 }}>
-                        <FormControlLabel control={<Switch checked={flowData.autoRefill} onChange={(e) => setFlowData({ ...flowData, autoRefill: e.target.checked })} />} label="Auto-refill flow from main wallet when balance is low" />
-                        <Typography variant="body2" color="text.secondary">Alerts for 80% usage are automatically enabled for all flows.</Typography>
-                    </Box>
-                );
-            case 7:
-                return (
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, mt: 3 }}>
-                        <Typography variant="h6">Funding source: Main Wallet (${userProfile?.walletBalance || 0})</Typography>
-                        <TextField label="Allocate Initial Funds ($)" type="number" fullWidth value={flowData.initialFunding} onChange={handleChange('initialFunding')} />
-                    </Box>
-                );
-            default:
-                return "Unknown step";
+    const input = "w-full rounded-xl h-12 px-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary";
+
+    const renderStep = () => {
+        switch (activeStep) {
+            case 0: return (
+                <div className="space-y-4">
+                    <div>
+                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">Flow Name *</label>
+                        <input className={input} placeholder="e.g. Construction Site, Trip Fund..." value={flowData.name} onChange={e => update('name', e.target.value)} />
+                    </div>
+                    <div>
+                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">Description</label>
+                        <textarea className={`${input} h-24 py-3`} placeholder="What is this flow for?" value={flowData.description} onChange={e => update('description', e.target.value)} />
+                    </div>
+                </div>
+            );
+            case 1: return (
+                <div className="space-y-4">
+                    <div>
+                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">Budget Period</label>
+                        <select className={input} value={flowData.budgetType} onChange={e => update('budgetType', e.target.value)}>
+                            {['Daily', 'Weekly', 'Monthly', 'Custom'].map(t => <option key={t}>{t}</option>)}
+                        </select>
+                    </div>
+                    <div>
+                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">Budget Amount (₹)</label>
+                        <input type="number" className={input} placeholder="0" value={flowData.budgetAmount} onChange={e => update('budgetAmount', e.target.value)} />
+                    </div>
+                </div>
+            );
+            case 2: return (
+                <div className="space-y-4">
+                    <div className="flex gap-2">
+                        <input className={`${input} flex-1`} type="email" placeholder="Participant email" value={partEmail} onChange={e => setPartEmail(e.target.value)} />
+                        <select className="rounded-xl h-12 px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700" value={partRole} onChange={e => setPartRole(e.target.value)}>
+                            {['Manager', 'Spender', 'Viewer'].map(r => <option key={r}>{r}</option>)}
+                        </select>
+                        <button onClick={handleAddParticipant} className="h-12 px-4 rounded-xl bg-primary text-white font-bold text-sm">Add</button>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                        {flowData.participants.map((p, i) => (
+                            <div key={i} className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 text-primary rounded-full text-sm">
+                                <span>{p.email} ({p.role})</span>
+                                <button onClick={() => update('participants', flowData.participants.filter((_, idx) => idx !== i))} className="text-primary/70 hover:text-primary">✕</button>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+            case 3: return (
+                <div className="flex flex-wrap gap-2">
+                    {CATEGORIES.map(cat => (
+                        <button key={cat} onClick={() => toggleCategory(cat)} className={`px-4 py-2 rounded-full text-sm font-semibold border transition-colors ${flowData.allowedCategories.includes(cat) ? 'bg-primary text-white border-primary' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700'}`}>
+                            {cat}
+                        </button>
+                    ))}
+                    {flowData.allowedCategories.length === 0 && <p className="text-xs text-slate-400 pt-2">Select allowed spending categories (leave all unselected for no restrictions)</p>}
+                </div>
+            );
+            case 4: return (
+                <div className="space-y-4">
+                    {[['perTransactionLimit', 'Per Transaction Limit'], ['dailyLimit', 'Daily Limit'], ['monthlyLimit', 'Monthly Limit']].map(([k, label]) => (
+                        <div key={k}>
+                            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">{label} (₹) <span className="font-normal lowercase">(optional)</span></label>
+                            <input type="number" className={input} placeholder="Leave empty for no limit" value={(flowData as any)[k]} onChange={e => update(k, e.target.value)} />
+                        </div>
+                    ))}
+                </div>
+            );
+            case 5: return (
+                <div className="space-y-4">
+                    <div>
+                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">Allowed Merchants (comma-separated)</label>
+                        <input className={input} placeholder="Leave empty for all merchants" value={flowData.merchantRestrictions} onChange={e => update('merchantRestrictions', e.target.value)} />
+                    </div>
+                    <div className="space-y-3 pt-2">
+                        {[
+                            ['approvalRequired', 'Require manager approval for each transaction'],
+                            ['receiptRequired', 'Require receipt upload after each payment'],
+                            ['autoRefill', 'Auto-refill from main wallet when balance is low']
+                        ].map(([k, label]) => (
+                            <label key={k} className="flex items-center gap-3 cursor-pointer">
+                                <div className={`w-12 h-6 rounded-full transition-colors relative ${(flowData as any)[k] ? 'bg-primary' : 'bg-slate-300 dark:bg-slate-600'}`} onClick={() => update(k, !(flowData as any)[k])}>
+                                    <div className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${(flowData as any)[k] ? 'translate-x-6' : ''}`}></div>
+                                </div>
+                                <span className="text-sm text-slate-700 dark:text-slate-300">{label}</span>
+                            </label>
+                        ))}
+                    </div>
+                </div>
+            );
+            case 6: return (
+                <div className="space-y-4">
+                    <div className="p-4 bg-primary/10 rounded-xl">
+                        <p className="text-xs font-bold text-slate-500 uppercase tracking-wide">Main Wallet Balance</p>
+                        <p className="text-2xl font-bold text-primary dark:text-slate-100 mt-1">₹{(userProfile?.walletBalance || 0).toLocaleString('en-IN')}</p>
+                    </div>
+                    <div>
+                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">Initial Funding (₹)</label>
+                        <input type="number" className={input} placeholder="Amount to allocate to this flow" value={flowData.initialFunding} onChange={e => update('initialFunding', e.target.value)} />
+                    </div>
+                </div>
+            );
+            default: return null;
         }
     };
 
     return (
-        <Box sx={{ p: 2, pt: 6, pb: 10 }}>
-            <Typography variant="h5" fontWeight="bold" sx={{ mb: 3 }}>Create New Flow</Typography>
-            <Stepper activeStep={activeStep} alternativeLabel sx={{ mb: 4, overflowX: 'auto' }}>
-                {steps.map((label) => (
-                    <Step key={label}>
-                        <StepLabel>{label}</StepLabel>
-                    </Step>
-                ))}
-            </Stepper>
+        <div className="min-h-screen bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+            {/* Header */}
+            <header className="flex items-center p-4 justify-between bg-primary text-white">
+                <button onClick={() => navigate(-1)} className="flex size-10 items-start">
+                    <span className="material-symbols-outlined text-2xl">arrow_back</span>
+                </button>
+                <h1 className="text-lg font-bold flex-1 text-center">Create New Flow</h1>
+                <div className="size-10"></div>
+            </header>
 
-            <Box sx={{ minHeight: '40vh' }}>
-                {renderStepContent(activeStep)}
-            </Box>
+            {/* Progress bar */}
+            <div className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 py-3">
+                <div className="flex items-center justify-between mb-2">
+                    <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">{steps[activeStep]}</p>
+                    <p className="text-xs text-slate-500">{activeStep + 1}/{steps.length}</p>
+                </div>
+                <div className="h-1.5 w-full rounded-full bg-slate-200 dark:bg-slate-700">
+                    <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${((activeStep + 1) / steps.length) * 100}%` }}></div>
+                </div>
+                <div className="flex gap-1 mt-3 overflow-x-auto hide-scrollbar">
+                    {steps.map((s, i) => (
+                        <button key={s} onClick={() => i < activeStep && setActiveStep(i)} className={`shrink-0 px-2 py-0.5 rounded-full text-[10px] font-bold transition-colors ${i === activeStep ? 'bg-primary text-white' : i < activeStep ? 'bg-primary/20 text-primary' : 'bg-slate-100 dark:bg-slate-800 text-slate-400'}`}>
+                            {s}
+                        </button>
+                    ))}
+                </div>
+            </div>
 
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4 }}>
-                <Button disabled={activeStep === 0} onClick={handleBack} variant="outlined" sx={{ borderRadius: 8 }}>
+            <div className="p-5 pb-28">
+                {renderStep()}
+            </div>
+
+            {/* Bottom Nav */}
+            <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[480px] p-4 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 flex gap-3 z-20">
+                <button disabled={activeStep === 0} onClick={() => setActiveStep(p => p - 1)} className="flex-1 h-12 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-semibold disabled:opacity-40">
                     Back
-                </Button>
-                <Button variant="contained" onClick={handleNext} sx={{ borderRadius: 8 }}>
-                    {activeStep === steps.length - 1 ? 'Launch Flow' : 'Next'}
-                </Button>
-            </Box>
-        </Box>
+                </button>
+                <button
+                    onClick={activeStep === steps.length - 1 ? handleComplete : () => setActiveStep(p => p + 1)}
+                    disabled={submitting || (activeStep === 0 && !flowData.name)}
+                    className="flex-2 flex-1 h-12 rounded-xl bg-primary text-white font-bold disabled:opacity-50"
+                >
+                    {submitting ? 'Launching...' : activeStep === steps.length - 1 ? 'Launch Flow 🚀' : 'Next'}
+                </button>
+            </div>
+        </div>
     );
 };
 
