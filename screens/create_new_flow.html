@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Create New Flow</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0a243e",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#121920",
+                        "emerald": "#10b981",
+                        "emerald-light": "#d1fae5",
+                        "emerald-dark": "#059669",
+                        "slate-50": "#f8fafc",
+                        "slate-100": "#f1f5f9",
+                        "slate-200": "#e2e8f0",
+                        "slate-300": "#cbd5e1",
+                        "slate-400": "#94a3b8",
+                        "slate-500": "#64748b",
+                        "slate-600": "#475569",
+                        "slate-700": "#334155",
+                        "slate-800": "#1e293b",
+                        "slate-900": "#0f172a",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-light text-slate-900 antialiased h-full">
+<div class="relative flex min-h-screen w-full flex-col max-w-md mx-auto shadow-sm overflow-x-hidden bg-white">
+<!-- Header -->
+<div class="flex items-center p-4 pb-2 justify-between sticky top-0 bg-white/80 backdrop-blur-md z-10 border-b border-slate-100">
+<button aria-label="Go back" class="flex size-12 shrink-0 items-center justify-center rounded-full hover:bg-slate-50 transition-colors text-slate-700">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h2 class="text-slate-900 text-lg font-bold leading-tight tracking-tight flex-1 text-center pr-12">New Flow</h2>
+</div>
+<!-- Main Content -->
+<main class="flex-1 overflow-y-auto pb-24">
+<h1 class="text-primary text-3xl font-extrabold leading-tight px-6 text-center pb-6 pt-8 tracking-tight">How would you like to start?</h1>
+<div class="flex flex-col gap-6 p-6">
+<!-- Option 1: Template -->
+<button class="flex flex-col text-left group transition-all active:scale-[0.98]">
+<div class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-6 flex flex-col items-center justify-center gap-4 group-hover:border-emerald group-hover:shadow-md transition-all h-48 relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-br from-emerald-light/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="w-16 h-16 rounded-full bg-emerald/10 text-emerald flex items-center justify-center relative z-10 group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined text-4xl">dashboard_customize</span>
+</div>
+</div>
+<div class="pt-4 text-center px-2">
+<p class="text-slate-900 text-lg font-semibold leading-normal mb-1">Use Template</p>
+<p class="text-slate-500 text-sm font-normal leading-relaxed">Start with pre-set rules for common spending scenarios</p>
+</div>
+</button>
+<!-- Option 2: Custom -->
+<button class="flex flex-col text-left group transition-all active:scale-[0.98]">
+<div class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-6 flex flex-col items-center justify-center gap-4 group-hover:border-primary group-hover:shadow-md transition-all h-48 relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="w-16 h-16 rounded-full bg-primary/10 text-primary flex items-center justify-center relative z-10 group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined text-4xl">magic_button</span>
+</div>
+</div>
+<div class="pt-4 text-center px-2">
+<p class="text-slate-900 text-lg font-semibold leading-normal mb-1">Create Custom Flow</p>
+<p class="text-slate-500 text-sm font-normal leading-relaxed">Build your own rules and limits from scratch</p>
+</div>
+</button>
+</div>
+</main>
+<!-- Bottom Navigation -->
+<div class="fixed bottom-0 w-full max-w-md bg-white border-t border-slate-100 pb-safe pt-2 px-4 z-20">
+<div class="flex gap-2 pb-3">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">home</span>
+<p class="text-[10px] font-medium tracking-wide">Home</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">account_tree</span>
+<p class="text-[10px] font-bold tracking-wide">Flows</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">history</span>
+<p class="text-[10px] font-medium tracking-wide">Activity</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">person</span>
+<p class="text-[10px] font-medium tracking-wide">Profile</p>
+</a>
+</div>
+</div>
+</div>
+</body></html>

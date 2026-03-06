@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FlowPay Splash Screen</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0a243e",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#121920",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display h-screen w-full flex flex-col relative overflow-hidden text-slate-900 dark:text-slate-100">
+<!-- Gradient Background Elements -->
+<div class="absolute inset-0 z-0 bg-gradient-to-br from-primary via-primary/80 to-[#4DA3FF]/20 opacity-10"></div>
+<div class="absolute -top-[20%] -right-[20%] w-[60%] h-[60%] rounded-full bg-primary/10 blur-3xl"></div>
+<div class="absolute -bottom-[20%] -left-[20%] w-[60%] h-[60%] rounded-full bg-[#4DA3FF]/10 blur-3xl"></div>
+<div class="relative z-10 flex flex-1 flex-col items-center justify-center p-6 w-full h-full">
+<!-- Main Content -->
+<div class="flex w-full flex-col gap-6 items-center flex-1 justify-center">
+<!-- Logo Icon -->
+<div class="relative flex items-center justify-center aspect-square rounded-full w-32 bg-primary dark:bg-slate-100 shadow-2xl shadow-primary/20">
+<span class="material-symbols-outlined text-6xl text-white dark:text-primary" style="font-variation-settings: 'FILL' 1;">
+                    account_balance_wallet
+                </span>
+<!-- Orbiting Elements (Decorative) -->
+<div class="absolute inset-0 rounded-full border border-primary/20 dark:border-slate-100/20 scale-[1.3]"></div>
+<div class="absolute inset-0 rounded-full border border-primary/10 dark:border-slate-100/10 scale-[1.6]"></div>
+</div>
+<!-- Text Content -->
+<div class="flex flex-col items-center justify-center gap-2 mt-4">
+<h1 class="text-primary dark:text-slate-100 text-4xl font-bold leading-tight tracking-tight text-center">
+                    FlowPay
+                </h1>
+<p class="text-slate-500 dark:text-slate-400 text-lg font-medium leading-normal text-center max-w-[240px]">
+                    Programmable money for real life.
+                </p>
+</div>
+</div>
+<!-- Loading Indicator Area -->
+<div class="w-full max-w-[200px] flex flex-col gap-3 pb-12 items-center">
+<div class="w-full h-1.5 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden relative">
+<!-- Loading Bar -->
+<div class="absolute top-0 left-0 h-full w-2/3 rounded-full bg-primary dark:bg-[#4DA3FF]"></div>
+</div>
+<p class="text-xs text-slate-400 dark:text-slate-500 font-medium uppercase tracking-wider">Loading...</p>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Scan and Pay via Flow</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0a243e",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#121920",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 overflow-x-hidden">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root max-w-md mx-auto">
+<!-- Top App Bar -->
+<div class="flex items-center p-4 pb-2 justify-between z-10 relative">
+<button aria-label="Close" class="flex size-12 shrink-0 items-center justify-center text-slate-900 dark:text-slate-100">
+<span class="material-symbols-outlined">close</span>
+</button>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-12">Scan &amp; Pay</h2>
+</div>
+<!-- Camera Viewfinder Area -->
+<div class="absolute inset-0 z-0">
+<!-- Simulated Camera Background -->
+<div class="w-full h-full bg-slate-800 bg-center bg-cover" data-alt="Simulated camera feed showing a QR code" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBNBqd9r_h8PxaRRYkYlIek21q6I3ybhOzspTKWIS3AhqqJYuVbR3TTkvSO-GYIl60ECQKmvnlYBHKShgeWFzNiNVPSeXWh8QE3rhBmHRzVitjHU-i_4RR_1ZiJfBOp2tQ3kKaa1fvOauZE6DWWr1iWtLS_woQFdCPtM3bfOTicpfyGr60S8nwMzNTZW_Tw-EnoP-o0oPImBTr7VpT4VgtCjXuQHxKaGD_g09PVICOASElzASTjxQIVWcSVubsSVyGb1uhVJ94Z2tU");'></div>
+<!-- Viewfinder Overlay -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none pb-48">
+<div class="w-64 h-64 border-2 border-white/50 rounded-xl relative">
+<!-- Corner Markers -->
+<div class="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-white rounded-tl-xl"></div>
+<div class="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-white rounded-tr-xl"></div>
+<div class="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-white rounded-bl-xl"></div>
+<div class="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-white rounded-br-xl"></div>
+</div>
+</div>
+<div class="absolute inset-0 bg-black/30 pointer-events-none"></div>
+</div>
+<!-- Bottom Sheet -->
+<div class="flex absolute bottom-0 left-0 w-full flex-col justify-end items-stretch z-20">
+<div class="flex flex-col items-stretch bg-background-light dark:bg-background-dark rounded-t-3xl shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
+<!-- Drag Handle -->
+<button class="flex h-6 w-full items-center justify-center pt-2">
+<div class="h-1.5 w-12 rounded-full bg-slate-300 dark:bg-slate-600"></div>
+</button>
+<div class="flex-1 px-6 pb-8 pt-4">
+<h1 class="text-2xl font-bold leading-tight tracking-[-0.015em] text-left mb-6">Payment Details</h1>
+<div class="flex flex-col gap-5">
+<!-- Select Flow -->
+<label class="flex flex-col w-full">
+<p class="text-sm font-medium leading-normal mb-2 text-slate-700 dark:text-slate-300">Select Flow</p>
+<div class="relative">
+<select class="appearance-none w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 h-14 px-4 text-base font-normal leading-normal focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+<option selected="" value="construction">Construction Site</option>
+<option value="trip">Trip Fund</option>
+<option value="personal">Personal Wallet</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
+<span class="material-symbols-outlined">expand_more</span>
+</div>
+</div>
+</label>
+<!-- Validation Logic / Rules Info -->
+<div class="bg-primary/10 dark:bg-primary/20 rounded-xl p-4 flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-0.5">rule</span>
+<div>
+<h3 class="font-semibold text-primary text-sm mb-1">Flow Rules Applied</h3>
+<p class="text-sm text-slate-600 dark:text-slate-400">Construction Materials Only. Limit: $500/day.</p>
+</div>
+</div>
+<!-- Pay Button -->
+<button class="mt-4 w-full h-14 rounded-xl bg-primary text-white font-bold text-lg flex items-center justify-center gap-2 shadow-lg shadow-primary/30 hover:bg-primary/90 transition-colors">
+<span class="material-symbols-outlined">qr_code_scanner</span>
+                            Scan &amp; Pay
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

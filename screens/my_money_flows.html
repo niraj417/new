@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>My Money Flows</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0a243e",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#121920",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen relative overflow-x-hidden">
+<!-- Header -->
+<div class="flex items-center p-4 pb-2 justify-between sticky top-0 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md z-10">
+<button class="flex size-12 shrink-0 items-center justify-center text-slate-700 dark:text-slate-300">
+<span class="material-symbols-outlined text-2xl">menu</span>
+</button>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Money Flows</h2>
+<button class="flex w-12 items-center justify-end text-slate-700 dark:text-slate-300">
+<span class="material-symbols-outlined text-2xl">search</span>
+</button>
+</div>
+<!-- Filters -->
+<div class="flex gap-3 p-4 overflow-x-auto no-scrollbar">
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-primary text-white px-4">
+<p class="text-sm font-medium leading-normal">Owned by me</p>
+</button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-4">
+<p class="text-sm font-medium leading-normal">Shared with me</p>
+</button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-4">
+<p class="text-sm font-medium leading-normal">Archived</p>
+</button>
+</div>
+<!-- Flow List -->
+<div class="px-4 pb-24 space-y-4">
+<!-- Card 1 -->
+<div class="bg-white dark:bg-slate-900 rounded-xl p-4 shadow-sm border border-slate-100 dark:border-slate-800">
+<div class="flex items-start justify-between mb-3">
+<div class="flex items-center gap-3">
+<div class="bg-primary/10 text-primary dark:bg-primary/20 dark:text-blue-400 p-2 rounded-lg">
+<span class="material-symbols-outlined">shopping_cart</span>
+</div>
+<div>
+<h3 class="text-base font-semibold">Family Groceries</h3>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="flex h-2 w-2 rounded-full bg-green-500"></span>
+<span class="text-xs text-slate-500 dark:text-slate-400">Active</span>
+</div>
+</div>
+</div>
+<div class="flex -space-x-2">
+<img alt="Avatar" class="w-8 h-8 rounded-full border-2 border-white dark:border-slate-900" data-alt="Portrait of a woman" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDspm-w9NeTHT4NGiCHZBFQVMXNLsNIXifFg3-OssEp2FjIysQiEjO4FZtPu3jCmshTgx9q7lCb3AKChKrg-9PCIKnxfw3tU3NYX1VeGP7DJNNubBqk5C29zv0gLy6kBexe6ic0tmldtW-0lWrhGgeqJbvtHJpZ52QpMnYyD2e78lIsigLNGpPMhpnnzL8mvyGB9rqbNeXwmZJH6RrupR_VWi4EbbH7iCZBb_0-_jtXL0CbreNWXhZeYz6DMroEXlGlzZqxfcuQfsU"/>
+<img alt="Avatar" class="w-8 h-8 rounded-full border-2 border-white dark:border-slate-900" data-alt="Portrait of a man" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIzoHjnZPZ_WYKl4LJ7wwWT-Qrqvk0weTP0JrtMDjVwdV9986x8zLOZUJSmGOlgqUCAhnyDLdVjFCDfVELY8KBJamq5zgyEqUm6PxZ5ol_kTM1B0MuCdOOR8JHXyC61fd8YFG3DDMtfx19j7fURIs-OjzocJ2PirvDuJFC8TnbQmjxjC3XEdZg2PiCDcMVl7EbLrGI5GS3qkXL2Qrt4i2INBFdgJQQ3MfiVX13SR7VcYrXMLnQkM85AlAFuP5Z6hMM1J9H0yFRlrg"/>
+</div>
+</div>
+<div class="flex justify-between items-end mt-4 mb-2">
+<div>
+<p class="text-sm text-slate-500 dark:text-slate-400 mb-1">Spent</p>
+<p class="text-lg font-bold">$450.00 <span class="text-sm font-normal text-slate-500 dark:text-slate-400">/ $600.00</span></p>
+</div>
+<p class="text-sm font-medium text-slate-700 dark:text-slate-300">75%</p>
+</div>
+<div class="h-2 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
+<div class="h-full rounded-full bg-primary dark:bg-blue-500" style="width: 75%;"></div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-white dark:bg-slate-900 rounded-xl p-4 shadow-sm border border-slate-100 dark:border-slate-800">
+<div class="flex items-start justify-between mb-3">
+<div class="flex items-center gap-3">
+<div class="bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 p-2 rounded-lg">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<div>
+<h3 class="text-base font-semibold">Freelance Income</h3>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="flex h-2 w-2 rounded-full bg-green-500"></span>
+<span class="text-xs text-slate-500 dark:text-slate-400">Active</span>
+</div>
+</div>
+</div>
+<div class="flex -space-x-2">
+<img alt="Avatar" class="w-8 h-8 rounded-full border-2 border-white dark:border-slate-900" data-alt="Portrait of a woman" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCriQvXZjrq9C1PdDVgsjjcIy27okvwCtDjLPHw47a10YUw6duk2UYElJFeRhuavVbG5eX_FxpuMI9AVNd7IxmFfdf0cC-wpxuWFzWerhAaW9SKpf28YgcjPSDBG-LPoK7JaWT4ZffUTmP0oOpjrOtLCAorgPXOS993KzzwJ9RsQVn4M2rYNNlYfARWdLY9CvxUHw70fCNwpH6ofGf80wVVapeXtYqyvBgomNb6y8Zb4xsOj2-L5D49kJrmUX8VafD8O8jRHSEHzT8"/>
+</div>
+</div>
+<div class="flex justify-between items-end mt-4 mb-2">
+<div>
+<p class="text-sm text-slate-500 dark:text-slate-400 mb-1">Received</p>
+<p class="text-lg font-bold">$1,200.00 <span class="text-sm font-normal text-slate-500 dark:text-slate-400">/ $5,000.00</span></p>
+</div>
+<p class="text-sm font-medium text-slate-700 dark:text-slate-300">24%</p>
+</div>
+<div class="h-2 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
+<div class="h-full rounded-full bg-blue-500" style="width: 24%;"></div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-white dark:bg-slate-900 rounded-xl p-4 shadow-sm border border-slate-100 dark:border-slate-800">
+<div class="flex items-start justify-between mb-3">
+<div class="flex items-center gap-3">
+<div class="bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400 p-2 rounded-lg">
+<span class="material-symbols-outlined">flight_takeoff</span>
+</div>
+<div>
+<h3 class="text-base font-semibold">Vacation Fund</h3>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="flex h-2 w-2 rounded-full bg-yellow-500"></span>
+<span class="text-xs text-slate-500 dark:text-slate-400">Paused</span>
+</div>
+</div>
+</div>
+<div class="flex -space-x-2">
+<img alt="Avatar" class="w-8 h-8 rounded-full border-2 border-white dark:border-slate-900" data-alt="Portrait of a woman" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7_-6RJIiZI9ouWhTvXkECZDmQRZb24J2KXFFNgIWfGiwWbmxfSqKENIzQDxCX9p9OmDRuxXxyg9tMmXL_AwzH0Gq31NuGOjzXtqe5syJ-KNacfNFcnKprnfDjwIG_dW2QzmWRlNczLRSW7a0F7iVX0BoMKj299QHw_doxpyWz6lNISVHM2BKtxzLukJIbAhohao6hqu3uiMb74O2_-AywTDejTBsKYm59LRhtwh_R3YBjzrn46ci1eP_GLmanLLEDJXrI8NaskP0"/>
+<img alt="Avatar" class="w-8 h-8 rounded-full border-2 border-white dark:border-slate-900" data-alt="Portrait of a man" src="https://lh3.googleusercontent.com/aida-public/AB6AXuANy029ip4GgUZsgFEQhPnlC5JdLsjMqWrIlTYcsZQ20maGF6ugQ3zcbDGEOab6kTjhCbGT_K9zALgEKW_tO_n6Mlx9FFrQ4bd8n7JQfK2FnpPpsqhwd0CNDPOUcI65FlVV08xU8CTJGZ4BK0W-t9SsZpjd7maLNI1VDoI7IYEBHa5cn5O-73--DvWlji-04bLzrmBZQNq6OdZjZCFhAd0R_JBajb5PJTGKgXWZQ9luakYn-OMBDjoCZWCT-iEdgiDtqhlclF9ZmOo"/>
+<div class="w-8 h-8 rounded-full border-2 border-white dark:border-slate-900 bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-xs font-medium text-slate-600 dark:text-slate-300">
+                        +2
+                    </div>
+</div>
+</div>
+<div class="flex justify-between items-end mt-4 mb-2">
+<div>
+<p class="text-sm text-slate-500 dark:text-slate-400 mb-1">Saved</p>
+<p class="text-lg font-bold">$2,100.00 <span class="text-sm font-normal text-slate-500 dark:text-slate-400">/ $3,000.00</span></p>
+</div>
+<p class="text-sm font-medium text-slate-700 dark:text-slate-300">70%</p>
+</div>
+<div class="h-2 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
+<div class="h-full rounded-full bg-purple-500" style="width: 70%;"></div>
+</div>
+</div>
+</div>
+<!-- FAB -->
+<button class="fixed bottom-24 right-4 w-14 h-14 bg-primary text-white rounded-full shadow-lg flex items-center justify-center hover:bg-primary/90 transition-colors z-20">
+<span class="material-symbols-outlined text-2xl">add</span>
+</button>
+<!-- Bottom Navigation Bar -->
+<div class="fixed bottom-0 left-0 right-0 flex gap-2 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pb-6 pt-3 z-20">
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-500 dark:text-slate-400" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined text-2xl">home</span>
+</div>
+<p class="text-[10px] font-medium leading-normal tracking-wide uppercase">Home</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-primary dark:text-blue-400" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined text-2xl">sync_alt</span>
+</div>
+<p class="text-[10px] font-medium leading-normal tracking-wide uppercase">Flows</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-500 dark:text-slate-400" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined text-2xl">credit_card</span>
+</div>
+<p class="text-[10px] font-medium leading-normal tracking-wide uppercase">Cards</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-500 dark:text-slate-400" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined text-2xl">settings</span>
+</div>
+<p class="text-[10px] font-medium leading-normal tracking-wide uppercase">Settings</p>
+</a>
+</div>
+</body></html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Set Spending Rules</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0a243e",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#121920",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex flex-col items-center">
+<div class="relative flex h-auto min-h-screen w-full max-w-md flex-col bg-background-light dark:bg-background-dark overflow-x-hidden shadow-lg">
+<!-- Header -->
+<div class="flex items-center p-4 pb-2 justify-between">
+<button class="flex size-12 shrink-0 items-center justify-center text-slate-900 dark:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-full transition-colors">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</button>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-12">Set Spending Rules</h2>
+</div>
+<!-- Progress Indicator -->
+<div class="flex w-full flex-row items-center justify-center gap-3 py-5 px-4">
+<div class="h-2 flex-1 rounded-full bg-slate-300 dark:bg-slate-700"></div>
+<div class="h-2 flex-1 rounded-full bg-slate-300 dark:bg-slate-700"></div>
+<div class="h-2 flex-1 rounded-full bg-slate-300 dark:bg-slate-700"></div>
+<div class="h-2 flex-1 rounded-full bg-primary relative overflow-hidden">
+<div class="absolute inset-y-0 left-0 w-full bg-primary"></div>
+</div>
+<div class="h-2 flex-1 rounded-full bg-slate-300 dark:bg-slate-700"></div>
+<div class="h-2 flex-1 rounded-full bg-slate-300 dark:bg-slate-700"></div>
+</div>
+<!-- Title & Subtitle -->
+<h2 class="text-[28px] font-bold leading-tight px-4 text-left pb-3 pt-2">What categories can this flow spend on?</h2>
+<p class="text-base font-normal leading-normal pb-6 pt-1 px-4 text-slate-600 dark:text-slate-400">Select one or more categories for your spending rules.</p>
+<!-- Categories Grid -->
+<div class="grid grid-cols-2 gap-3 p-4 flex-1 content-start">
+<!-- Category Item (Selected) -->
+<label class="relative flex flex-col gap-3 rounded-xl border-2 border-primary bg-primary/5 dark:bg-primary/20 p-4 items-center justify-center text-center cursor-pointer transition-all hover:bg-primary/10">
+<input checked="" class="absolute opacity-0" type="checkbox"/>
+<div class="absolute top-2 right-2 text-primary">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="text-primary mt-2">
+<span class="material-symbols-outlined text-3xl">local_gas_station</span>
+</div>
+<h3 class="text-base font-bold leading-tight">Fuel</h3>
+</label>
+<!-- Category Item -->
+<label class="relative flex flex-col gap-3 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 items-center justify-center text-center cursor-pointer transition-all hover:border-primary/50">
+<input class="absolute opacity-0" type="checkbox"/>
+<div class="absolute top-2 right-2 text-slate-300 dark:text-slate-600">
+<span class="material-symbols-outlined text-xl">radio_button_unchecked</span>
+</div>
+<div class="text-slate-700 dark:text-slate-300 mt-2">
+<span class="material-symbols-outlined text-3xl">restaurant</span>
+</div>
+<h3 class="text-base font-bold leading-tight">Food</h3>
+</label>
+<!-- Category Item -->
+<label class="relative flex flex-col gap-3 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 items-center justify-center text-center cursor-pointer transition-all hover:border-primary/50">
+<input class="absolute opacity-0" type="checkbox"/>
+<div class="absolute top-2 right-2 text-slate-300 dark:text-slate-600">
+<span class="material-symbols-outlined text-xl">radio_button_unchecked</span>
+</div>
+<div class="text-slate-700 dark:text-slate-300 mt-2">
+<span class="material-symbols-outlined text-3xl">directions_bus</span>
+</div>
+<h3 class="text-base font-bold leading-tight">Transport</h3>
+</label>
+<!-- Category Item (Selected) -->
+<label class="relative flex flex-col gap-3 rounded-xl border-2 border-primary bg-primary/5 dark:bg-primary/20 p-4 items-center justify-center text-center cursor-pointer transition-all hover:bg-primary/10">
+<input checked="" class="absolute opacity-0" type="checkbox"/>
+<div class="absolute top-2 right-2 text-primary">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="text-primary mt-2">
+<span class="material-symbols-outlined text-3xl">medical_services</span>
+</div>
+<h3 class="text-base font-bold leading-tight">Healthcare</h3>
+</label>
+<!-- Category Item -->
+<label class="relative flex flex-col gap-3 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 items-center justify-center text-center cursor-pointer transition-all hover:border-primary/50">
+<input class="absolute opacity-0" type="checkbox"/>
+<div class="absolute top-2 right-2 text-slate-300 dark:text-slate-600">
+<span class="material-symbols-outlined text-xl">radio_button_unchecked</span>
+</div>
+<div class="text-slate-700 dark:text-slate-300 mt-2">
+<span class="material-symbols-outlined text-3xl">construction</span>
+</div>
+<h3 class="text-base font-bold leading-tight">Materials</h3>
+</label>
+<!-- Category Item -->
+<label class="relative flex flex-col gap-3 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 items-center justify-center text-center cursor-pointer transition-all hover:border-primary/50">
+<input class="absolute opacity-0" type="checkbox"/>
+<div class="absolute top-2 right-2 text-slate-300 dark:text-slate-600">
+<span class="material-symbols-outlined text-xl">radio_button_unchecked</span>
+</div>
+<div class="text-slate-700 dark:text-slate-300 mt-2">
+<span class="material-symbols-outlined text-3xl">shopping_cart</span>
+</div>
+<h3 class="text-base font-bold leading-tight">Groceries</h3>
+</label>
+<!-- Category Item (Custom) -->
+<label class="relative flex flex-col gap-3 rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-600 bg-transparent p-4 items-center justify-center text-center cursor-pointer transition-all hover:bg-slate-100 dark:hover:bg-slate-800 col-span-2">
+<div class="text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined text-3xl">add</span>
+</div>
+<h3 class="text-base font-bold leading-tight text-slate-600 dark:text-slate-400">Add Custom Category</h3>
+</label>
+</div>
+<!-- Bottom Action -->
+<div class="p-4 bg-background-light dark:bg-background-dark border-t border-slate-200 dark:border-slate-800 mt-auto">
+<button class="w-full bg-primary text-white rounded-xl py-4 font-bold text-lg hover:bg-primary/90 transition-colors shadow-md flex items-center justify-center gap-2">
+                Continue
+                <span class="material-symbols-outlined text-xl">arrow_forward</span>
+</button>
+</div>
+</div>
+</body></html>
