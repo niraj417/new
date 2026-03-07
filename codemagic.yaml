@@ -55,7 +55,7 @@ workflows:
         script: |
           chmod +x gradlew
           ./gradlew assembleRelease \
-            -Pandroid.injected.signing.store.file="app/flowpay.keystore" \
+            -Pandroid.injected.signing.store.file="flowpay.keystore" \
             -Pandroid.injected.signing.store.password="$FDC_KEYSTORE_PASSWORD" \
             -Pandroid.injected.signing.key.alias="$FDC_KEY_ALIAS" \
             -Pandroid.injected.signing.key.password="$FDC_KEY_PASSWORD"
