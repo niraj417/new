@@ -1,0 +1,39 @@
+{
+    "project_info": {
+        "project_number": "331514420893",
+        "project_id": "flowpay-niraj417",
+        "storage_bucket": "flowpay-niraj417.firebasestorage.app"
+    },
+    "client": [
+        {
+            "client_info": {
+                "mobilesdk_app_id": "1:331514420893:android:ca110b00512a43639c7e74",
+                "android_client_info": {
+                    "package_name": "com.flowpay.app"
+                }
+            },
+            "oauth_client": [
+                {
+                    "client_id": "331514420893-rb8l60qpnjn9e13tvje1shse9nr22pr7.apps.googleusercontent.com",
+                    "client_type": 3
+                }
+            ],
+            "api_key": [
+                {
+                    "current_key": "AIzaSyDqJ4Eb0DUmmigP8Jlihtu5WpInh1raeUo"
+                }
+            ],
+            "services": {
+                "appinvite_service": {
+                    "other_platform_oauth_client": [
+                        {
+                            "client_id": "331514420893-rb8l60qpnjn9e13tvje1shse9nr22pr7.apps.googleusercontent.com",
+                            "client_type": 3
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "configuration_version": "1"
+}
