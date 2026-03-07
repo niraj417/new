@@ -8,6 +8,7 @@ import {
     signInWithEmailLink,
     GoogleAuthProvider,
     signInWithCredential,
+    signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { FirebaseAuthentication } from '@capacitor-firebase/authentication';
 import { Capacitor } from '@capacitor/core';
@@ -30,6 +31,7 @@ interface AuthContextType {
     sendEmailLink: (email: string) => Promise<void>;
     verifyAndLogin: (email: string, url: string) => Promise<boolean>;
     signInWithGoogle: () => Promise<void>;
+    signInWithTestAccount: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -40,6 +42,7 @@ const AuthContext = createContext<AuthContextType>({
     sendEmailLink: async () => { },
     verifyAndLogin: async () => false,
     signInWithGoogle: async () => { },
+    signInWithTestAccount: async () => { },
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -126,13 +129,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     };
 
+    /**
+     * Temporary Test Account Login
+     */
+    const signInWithTestAccount = async () => {
+        // You should create this user in Firebase manually or it will fail
+        await signInWithEmailAndPassword(auth, 'test@flowpay.app', 'password123');
+    };
+
     const logout = async () => {
         await FirebaseAuthentication.signOut();
         await signOut(auth);
     };
 
     return (
-        <AuthContext.Provider value={{ currentUser, userProfile, loading, logout, sendEmailLink, verifyAndLogin, signInWithGoogle }}>
+        <AuthContext.Provider value={{ currentUser, userProfile, loading, logout, sendEmailLink, verifyAndLogin, signInWithGoogle, signInWithTestAccount }}>
             {!loading && children}
         </AuthContext.Provider>
     );

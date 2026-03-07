@@ -13,7 +13,7 @@ const GoogleIcon = () => (
 
 const Onboarding = () => {
     const navigate = useNavigate();
-    const { sendEmailLink, verifyAndLogin, currentUser, signInWithGoogle } = useAuth();
+    const { sendEmailLink, verifyAndLogin, currentUser, signInWithGoogle, signInWithTestAccount } = useAuth();
     const [email, setEmail] = useState('');
     const [emailSent, setEmailSent] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -69,6 +69,18 @@ const Onboarding = () => {
         setGoogleLoading(false);
     };
 
+    const handleTestLogin = async () => {
+        setGoogleLoading(true);
+        setError('');
+        try {
+            await signInWithTestAccount();
+        } catch (err: unknown) {
+            const msg = err instanceof Error ? err.message : 'Test login failed';
+            setError(msg);
+        }
+        setGoogleLoading(false);
+    };
+
     return (
         <div className="relative flex h-auto min-h-screen w-full max-w-md mx-auto flex-col overflow-x-hidden bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
             <div className="flex items-center p-4 pb-2 justify-end"></div>
@@ -119,6 +131,17 @@ const Onboarding = () => {
                                     >
                                         <GoogleIcon />
                                         <span>Continue with Google</span>
+                                    </button>
+
+                                    {/* ── Test Login Bypass ─────────────────────────────── */}
+                                    <button
+                                        type="button"
+                                        onClick={handleTestLogin}
+                                        disabled={googleLoading}
+                                        className="flex items-center justify-center gap-3 rounded-xl h-12 px-5 bg-amber-500 dark:bg-amber-600 border border-amber-600 dark:border-amber-700 text-white text-base font-semibold w-full shadow-sm hover:bg-amber-600 dark:hover:bg-amber-700 active:scale-[0.98] transition-all mt-2"
+                                    >
+                                        <span className="material-symbols-outlined mr-2">bug_report</span>
+                                        <span>Test Account Bypass</span>
                                     </button>
 
                                     {/* ── Divider ─────────────────────────────────────── */}
