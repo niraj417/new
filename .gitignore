@@ -3,6 +3,7 @@ app/.env
 app/.env.local
 app/.env.production
 app/.firebase/
+app/*.keystore
 
 # ── Firebase ─────────────────────────────────────────────────────────────────
 app/firebase-debug.log
