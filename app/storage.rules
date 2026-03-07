@@ -1,0 +1,32 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // ── User Profile Assets ───────────────────────────────────────────────────
+    // Each user can read and write only their own directory.
+    // Files must be images or common document types and under 10MB.
+    match /users/{userId}/{allPaths=**} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow write: if request.auth != null &&
+                      request.auth.uid == userId &&
+                      request.resource.size < 10 * 1024 * 1024 &&
+                      request.resource.contentType.matches('image/.*|application/pdf');
+    }
+
+    // ── Flow Attachments ──────────────────────────────────────────────────────
+    // Authenticated users can read flow attachments (access further enforced by app logic).
+    // Only authenticated users can upload flow attachments under 10MB.
+    match /flows/{flowId}/{allPaths=**} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null &&
+                      request.resource.size < 10 * 1024 * 1024 &&
+                      request.resource.contentType.matches('image/.*|application/pdf');
+    }
+
+    // ── Default Deny ─────────────────────────────────────────────────────────
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

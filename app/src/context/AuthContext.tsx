@@ -1,6 +1,16 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import type { User } from 'firebase/auth';
-import { onAuthStateChanged, signOut, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
+import {
+    onAuthStateChanged,
+    signOut,
+    sendSignInLinkToEmail,
+    isSignInWithEmailLink,
+    signInWithEmailLink,
+    GoogleAuthProvider,
+    signInWithCredential,
+} from 'firebase/auth';
+import { FirebaseAuthentication } from '@capacitor-firebase/authentication';
+import { Capacitor } from '@capacitor/core';
 import { auth, db } from '../firebase';
 import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 
@@ -19,6 +29,7 @@ interface AuthContextType {
     logout: () => Promise<void>;
     sendEmailLink: (email: string) => Promise<void>;
     verifyAndLogin: (email: string, url: string) => Promise<boolean>;
+    signInWithGoogle: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -28,6 +39,7 @@ const AuthContext = createContext<AuthContextType>({
     logout: async () => { },
     sendEmailLink: async () => { },
     verifyAndLogin: async () => false,
+    signInWithGoogle: async () => { },
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -51,6 +63,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         name: user.displayName || 'Anonymous User',
                         email: user.email || '',
                         walletBalance: 0,
+                        profileImage: user.photoURL || undefined,
                         activeFlows: [],
                     };
                     await setDoc(userRef, {
@@ -84,19 +97,42 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 window.localStorage.removeItem('emailForSignIn');
                 return true;
             } catch (error) {
-                console.error("Error signing in with email link", error);
+                console.error('Error signing in with email link', error);
                 return false;
             }
         }
         return false;
     };
 
+    /**
+     * Google Sign-In
+     * - On Android/iOS (Capacitor): uses the native Google Sign-In sheet via
+     *   @capacitor-firebase/authentication, then creates a Firebase credential.
+     * - On Web (browser): falls back to Firebase's redirect-based Google sign-in,
+     *   which uses the configured Firebase Auth domain.
+     */
+    const signInWithGoogle = async () => {
+        if (Capacitor.isNativePlatform()) {
+            // Native flow — shows the system Google account picker
+            const result = await FirebaseAuthentication.signInWithGoogle();
+            const credential = GoogleAuthProvider.credential(
+                result.credential?.idToken,
+            );
+            await signInWithCredential(auth, credential);
+        } else {
+            // Web fallback — sign in via @capacitor-firebase/authentication
+            // which internally uses signInWithPopup on web
+            await FirebaseAuthentication.signInWithGoogle();
+        }
+    };
+
     const logout = async () => {
+        await FirebaseAuthentication.signOut();
         await signOut(auth);
     };
 
     return (
-        <AuthContext.Provider value={{ currentUser, userProfile, loading, logout, sendEmailLink, verifyAndLogin }}>
+        <AuthContext.Provider value={{ currentUser, userProfile, loading, logout, sendEmailLink, verifyAndLogin, signInWithGoogle }}>
             {!loading && children}
         </AuthContext.Provider>
     );
