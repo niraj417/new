@@ -4,6 +4,7 @@ app/.env.local
 app/.env.production
 app/.firebase/
 app/*.keystore
+app/base64_keystore.txt
 
 # ── Firebase ─────────────────────────────────────────────────────────────────
 app/firebase-debug.log
